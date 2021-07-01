@@ -22,8 +22,10 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
+      - name: CRYPTO DOWNLOAD
+        run: wget http://security.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu5.5_amd64.deb
       - name: CRYPTO INSTALL
-        run: sudo apt-get install libssl1.0.0
+        run: sudo apt install ./libssl1.0.0_1.0.2n-1ubuntu5.5_amd64.deb
       - name: ACTIONS_ALLOW_UNSECURE_COMMANDS
         id: ACTIONS_ALLOW_UNSECURE_COMMANDS
         run: echo 'ACTIONS_ALLOW_UNSECURE_COMMANDS=true' >> $GITHUB_ENV
