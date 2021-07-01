@@ -22,8 +22,8 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - run: sudo apt-get install openssl
-        name: "Install OpenSSL"
+      - name: "Install OpenSSL"
+        run: sudo apt-get install openssl
       - name: ACTIONS_ALLOW_UNSECURE_COMMANDS
         id: ACTIONS_ALLOW_UNSECURE_COMMANDS
         run: echo 'ACTIONS_ALLOW_UNSECURE_COMMANDS=true' >> $GITHUB_ENV
