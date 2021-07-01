@@ -63,4 +63,4 @@ jobs:
         host: ${{ secrets.HOST }}
         USERNAME: ${{ secrets.USERNAME }}
         PASSWORD: ${{ secrets.PASSWORD }}
-        script: docker service update --image axelclark/docker_phx:${{ github.sha }} docker_phx_app
+        script: docker service update --image beltranaceves/docker_phx:${{ github.sha }} docker_phx_app
