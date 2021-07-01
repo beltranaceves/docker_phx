@@ -41,8 +41,6 @@ jobs:
     - name: ACTIONS_ALLOW_UNSECURE_COMMANDS
       id: ACTIONS_ALLOW_UNSECURE_COMMANDS
       run: echo 'ACTIONS_ALLOW_UNSECURE_COMMANDS=true' >> $GITHUB_ENV
-    - name: PYTHON INSTALL
-      run: sudo apt-get update && apt-get install python
     - uses: actions/checkout@v2
     - name: Publish to DockerHub
       uses: elgohr/Publish-Docker-Github-Action@master
