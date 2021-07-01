@@ -45,7 +45,7 @@ jobs:
     - name: Publish to DockerHub
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
-        name: axelclark/docker_phx:${{ github.sha }}
+        name: beltranaceves/sightpotion:${{ github.sha }}
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
@@ -63,4 +63,4 @@ jobs:
         host: ${{ secrets.HOST }}
         USERNAME: ${{ secrets.USERNAME }}
         PASSWORD: ${{ secrets.PASSWORD }}
-        script: docker service update --image beltranaceves/docker_phx:${{ github.sha }} docker_phx_app
+        script: docker service update --image beltranaceves/sightpotion:${{ github.sha }} docker_phx_app
