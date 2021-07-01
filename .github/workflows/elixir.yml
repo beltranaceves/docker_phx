@@ -22,12 +22,8 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - name: Sign release
-        run: |
-          echo "$PRIVATE_KEY" > privatekey.pem
-          openssl dgst -sha512 -sign privatekey.pem -out latest.sig latest.zip
-          env:
-            PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+      - run: sudo apt-get install openssl
+        name: "Install OpenSSL"
       - name: ACTIONS_ALLOW_UNSECURE_COMMANDS
         id: ACTIONS_ALLOW_UNSECURE_COMMANDS
         run: echo 'ACTIONS_ALLOW_UNSECURE_COMMANDS=true' >> $GITHUB_ENV
@@ -44,12 +40,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: test
     steps:
-    - name: Sign release
-      run: |
-        echo "$PRIVATE_KEY" > privatekey.pem
-        openssl dgst -sha512 -sign privatekey.pem -out latest.sig latest.zip
-        env:
-          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
     - name: ACTIONS_ALLOW_UNSECURE_COMMANDS
       id: ACTIONS_ALLOW_UNSECURE_COMMANDS
       run: echo 'ACTIONS_ALLOW_UNSECURE_COMMANDS=true' >> $GITHUB_ENV
@@ -66,12 +56,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: [test, publish]
     steps:
-    - name: Sign release
-      run: |
-        echo "$PRIVATE_KEY" > privatekey.pem
-        openssl dgst -sha512 -sign privatekey.pem -out latest.sig latest.zip
-        env:
-          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
     - name: ACTIONS_ALLOW_UNSECURE_COMMANDS
       id: ACTIONS_ALLOW_UNSECURE_COMMANDS
       run: echo 'ACTIONS_ALLOW_UNSECURE_COMMANDS=true' >> $GITHUB_ENV
