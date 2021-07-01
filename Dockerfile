@@ -21,6 +21,7 @@ RUN mix deps.compile
 
 # build assets
 COPY assets assets
+RUN yarn
 RUN cd assets && npm install && npm run deploy
 RUN mix phx.digest
 
