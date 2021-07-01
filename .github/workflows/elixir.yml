@@ -24,8 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-elixir@v1.3.0
-        env:
-        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+        
         with:
           elixir-version: 1.12.1 # Define the elixir version [required]
           otp-version: 22.2 # Define the OTP version [required]
@@ -41,7 +40,7 @@ jobs:
     - name: Publish to DockerHub
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
-        ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
         name: beltranaceves/docker_phx:${{ github.sha }}
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
