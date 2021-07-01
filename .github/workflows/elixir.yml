@@ -22,6 +22,9 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
+      - name: ACTIONS_ALLOW_UNSECURE_COMMANDS
+        id: ACTIONS_ALLOW_UNSECURE_COMMANDS
+        run: echo 'ACTIONS_ALLOW_UNSECURE_COMMANDS=true' >> $GITHUB_ENV
       - uses: actions/checkout@v2
       - uses: actions/setup-elixir@v1.2.0
         with:
@@ -35,6 +38,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: test
     steps:
+    - name: ACTIONS_ALLOW_UNSECURE_COMMANDS
+      id: ACTIONS_ALLOW_UNSECURE_COMMANDS
+      run: echo 'ACTIONS_ALLOW_UNSECURE_COMMANDS=true' >> $GITHUB_ENV
     - uses: actions/checkout@v2
     - name: Publish to DockerHub
       uses: elgohr/Publish-Docker-Github-Action@master
@@ -47,6 +53,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: [test, publish]
     steps:
+    - name: ACTIONS_ALLOW_UNSECURE_COMMANDS
+      id: ACTIONS_ALLOW_UNSECURE_COMMANDS
+      run: echo 'ACTIONS_ALLOW_UNSECURE_COMMANDS=true' >> $GITHUB_ENV
     - uses: actions/checkout@v2
     - name: Executing remote  command
       uses: appleboy/ssh-action@master
