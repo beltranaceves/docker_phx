@@ -25,7 +25,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-elixir@v1.2.0
         with:
-          elixir-version: 1.9.4 # Define the elixir version [required]
+          elixir-version: 1.12.1 # Define the elixir version [required]
           otp-version: 22.2 # Define the OTP version [required]
       - name: Install Dependencies
         run: mix deps.get
@@ -39,7 +39,7 @@ jobs:
     - name: Publish to DockerHub
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
-        name: axelclark/docker_phx:${{ github.sha }}
+        name: beltranaceves/docker_phx:${{ github.sha }}
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
@@ -53,5 +53,5 @@ jobs:
       with:
         host: ${{ secrets.HOST }}
         USERNAME: ${{ secrets.USERNAME }}
-        KEY: ${{ secrets.SSHKEY }}
-        script: docker service update --image axelclark/docker_phx:${{ github.sha }} docker_phx_app
+        PASSWORD: ${{ secrets.PASSWORD }}
+        script: docker service update --image beltranaceves/docker_phx:${{ github.sha }} docker_phx_app

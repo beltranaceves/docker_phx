@@ -1,5 +1,5 @@
 # File: docker_phx/Dockerfile
-FROM elixir:1.9-alpine as build
+FROM elixir:1.12.1-alpine as build
 
 # install build dependencies
 RUN apk add --update git build-base nodejs npm yarn python
@@ -36,7 +36,7 @@ RUN mix compile
 RUN mix release
 
 # prepare release image
-FROM alpine:3.9 AS app
+FROM alpine:3.14 AS app
 
 # install runtime dependencies
 RUN apk add --update bash openssl postgresql-client
