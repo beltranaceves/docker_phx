@@ -23,7 +23,7 @@ jobs:
           --health-retries 5
     steps:
       - name: CRYPTO DOWNLOAD
-        run: wget http://security.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu5.5_amd64.deb
+        run: wget http://security.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0-dev_1.0.2n-1ubuntu5.6_amd64.deb
       - name: CRYPTO INSTALL
         run: sudo apt install ./libssl1.0.0_1.0.2n-1ubuntu5.5_amd64.deb
       - name: ACTIONS_ALLOW_UNSECURE_COMMANDS
