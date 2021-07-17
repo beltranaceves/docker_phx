@@ -8,10 +8,30 @@ networks:
     attachable: true # Needed in order to run custom commands in the container
 
 services:
+
+  nginx:
+    image: jonasal/nginx-certbot:latest
+    restart: unless-stopped
+    environment:
+      CERTBOT_EMAIL: ${CERTBOT_EMAIL}
+      STAGING: ${STAGING}
+      DHPARAM_SIZE: ${DHPARAM_SIZE}
+      RSA_KEY_SIZE: ${RSA_KEY_SIZE}
+      ELLIPTIC_CURVE: ${ELLIPTIC_CURVE}
+      USE_ECDSA: ${USE_ECDSA}
+      RENEWAL_INTERVAL: ${RENEWAL_INTERVAL}
+      DEBUG: ${DEBUG}
+    env_file:
+      - .env
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - nginx_secrets:/etc/letsencrypt
+      - ./user_conf.d:/etc/nginx/user_conf.d
+
   app:
     image: axelclark/docker_phx:0.1.0
-    ports:
-      - "80:4000"
     env_file:
       - config/docker.env
     depends_on:
@@ -39,3 +59,6 @@ services:
       - config/docker.env
     networks:
       - webnet
+
+volumes:
+  nginx_secrets:
