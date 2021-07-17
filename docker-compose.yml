@@ -34,6 +34,8 @@ services:
     image: axelclark/docker_phx:0.1.0
     env_file:
       - config/docker.env
+    ports:
+      - 4000:4000
     depends_on:
       - db
     deploy:
