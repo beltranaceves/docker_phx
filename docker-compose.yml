@@ -31,7 +31,6 @@ services:
       - ./user_conf.d:/etc/nginx/user_conf.d
     networks: 
       - webnet
-    network_mode: "host"
 
   app:
     image: axelclark/docker_phx:0.1.0
