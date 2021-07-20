@@ -1,68 +1,49 @@
-# File docker_phx/docker-compose.yml
-version: "3.5"
-
-
-networks:
-  webnet:
-    driver: overlay
-    attachable: true # Needed in order to run custom commands in the container
+version: '3'
 
 services:
-
   nginx:
-    image: jonasal/nginx-certbot:latest
+    image: nginx:1.15-alpine
     restart: unless-stopped
-    environment:
-      CERTBOT_EMAIL: ${CERTBOT_EMAIL}
-      STAGING: ${STAGING}
-      DHPARAM_SIZE: ${DHPARAM_SIZE}
-      RSA_KEY_SIZE: ${RSA_KEY_SIZE}
-      ELLIPTIC_CURVE: ${ELLIPTIC_CURVE}
-      USE_ECDSA: ${USE_ECDSA}
-      RENEWAL_INTERVAL: ${RENEWAL_INTERVAL}
-      DEBUG: ${DEBUG}
-    env_file:
-      - .env
-    ports:
-      - 80:80
-      - 443:443
     volumes:
-      - nginx_secrets:/etc/letsencrypt
-      - ./user_conf.d:/etc/nginx/user_conf.d
-    networks: 
-      - webnet
-
-  app:
-    image: axelclark/docker_phx:0.1.0
-    env_file:
-      - config/docker.env
+      - ./data/nginx:/etc/nginx/conf.d
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
     ports:
-      - "4000:4000"
-    depends_on:
-      - db
-    deploy:
-      replicas: 1
-      restart_policy:
-        condition: on-failure
-    networks:
-      - webnet
-
-  db:
-    image: postgres:10-alpine
-    deploy:
-      replicas: 1
-      placement:
-        constraints: [node.role == manager]
-      restart_policy:
-        condition: on-failure
+      - "80:80"
+      - "443:443"
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+  certbot:
+    image: certbot/certbot
+    restart: unless-stopped
     volumes:
-      - "./volumes/postgres:/var/lib/postgresql/data"
-    ports:
-      - "5432:5432"
-    env_file:
-      - config/docker.env
-    networks:
-      - webnet
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 
-volumes:
-  nginx_secrets:
+    app:
+      image: axelclark/docker_phx:0.1.0
+      env_file:
+        - config/docker.env
+      ports:
+        - "4000:4000"
+      depends_on:
+        - db
+      deploy:
+        replicas: 1
+        restart_policy:
+          condition: on-failure
+    db:
+      image: postgres:10-alpine
+      deploy:
+        replicas: 1
+        restart_policy:
+          condition: on-failure
+      volumes:
+        - "./volumes/postgres:/var/lib/postgresql/data"
+      ports:
+        - "5432:5432"
+      env_file:
+        - config/docker.env
+  
+  volumes:
+    nginx_secrets: 
